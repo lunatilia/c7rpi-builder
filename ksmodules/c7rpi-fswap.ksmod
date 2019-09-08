@@ -1,0 +1,101 @@
+%post
+# Specific Unit file swapfile manager
+cat > /etc/systemd/system/fswapctl.service << 'EOF'
+[Unit]
+Description=swapfile manager
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/sbin/fswapctl swapcheck
+ExecStart=/usr/sbin/fswapctl swapon
+ExecStop=/usr/sbin/fswapctl swapoff
+RemainAfterExit=yes
+
+[Install]
+WantedBy=local-fs.target
+EOF
+
+
+# Specific swapfile manager command
+cat > /usr/sbin/fswapctl << 'EOF'
+#!/bin/sh
+export LC_ALL=C; export LANG=C
+
+swapfile=/swapfile
+swapsize=1024
+swapconf=/etc/fswap.conf
+
+if [ -f ${swapconf} ]; then
+  . ${swapconf}
+fi
+
+case "$1" in
+
+  swapcheck)
+    "$0" swapoff
+
+    if [ -f ${swapfile} ]; then
+      echo -n "checking existing"
+      swapbytes="`expr ${swapsize} "*" 1048576`"
+      filebytes="`ls -l ${swapfile} | awk '{ print $5 }'`"
+
+      if [ "${filebytes}" != "${swapbytes}" ]; then
+        "$0" swapremove
+        "$0" swapgenerate
+      else
+        echo ": keeping it"
+      fi
+    else
+      "$0" swapgenerate
+    fi
+    ;;
+
+  swapon)
+    if [ -f "${swapfile}" ]; then
+      swapon ${swapfile} 2>&1 > /dev/null
+    else
+      echo "$0: ERROR: swap file missing!"
+    fi
+    ;;
+
+  swapoff)
+    if [ "`swapon -s | grep ${swapfile} | awk '{ print $1 }'`" != "" ]; then
+      swapoff ${swapfile} 2>&1 > /dev/null
+    fi
+    ;;
+
+  swapremove)
+    "$0" swapoff
+
+    if [ -f ${swapfile} ]; then
+      rm ${swapfile}
+    fi
+    ;;
+  swapgenerate)
+    echo -n "generating swapfile ..."
+    dd if=/dev/zero of=${swapfile} bs=1M count=${swapsize} 2>&1 > /dev/null
+    chmod 600 ${swapfile}
+    mkswap ${swapfile} > /dev/null
+    ;;
+  *)
+    echo "Usage: $0 {swapcheck|swapon|swapoff|swapremove|swapgenerate}"
+
+    exit 1
+    ;;
+
+esac
+
+exit 0
+EOF
+
+chmod +x /usr/sbin/fswapctl
+
+# Specific swapfile manager config
+cat > /etc/fswap.conf << 'EOF'
+# swapfile size (MiB)
+swapsize=100
+EOF
+
+systemctl enable fswapctl.service
+%end

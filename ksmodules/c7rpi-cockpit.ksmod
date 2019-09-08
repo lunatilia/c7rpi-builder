@@ -1,0 +1,14 @@
+%packages
+cockpit
+cockpit-pcp
+cockpit-storaged
+cockpit-packagekit
+pcp
+sos
+setroubleshoot-server
+%end
+
+%post
+systemctl enable cockpit.socket
+systemctl enable pmcd.service pmlogger.service
+%end

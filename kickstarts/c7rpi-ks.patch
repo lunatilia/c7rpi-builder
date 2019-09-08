@@ -1,0 +1,74 @@
+--- original-ks.cfg	2018-11-27 22:30:52.197763133 +0900
++++ c7rpi-ks.cfg	2019-09-08 13:41:21.859748282 +0900
+@@ -3,40 +3,39 @@
+ install
+ # Keyboard layouts
+ # old format: keyboard us
+-# new format:
+-keyboard --vckeymap=us --xlayouts='us'
++# new format: keyboard jp
++keyboard --vckeymap=jp --xlayouts='jp'
+ # Root password
+ rootpw --plaintext centos
+ # Use network installation
+-url --url="http://armv7.dev.centos.org/repos/7/os/armhfp/"
++url --url="http://mirror.centos.org/altarch/7/os/armhfp/"
+ # System language
+-lang en_US.UTF-8
+-repo --name="instCentOS" --baseurl=http://armv7.dev.centos.org/repos/7/os/armhfp/ --cost=100
+-repo --name="instUpdates" --baseurl=http://armv7.dev.centos.org/repos/7/updates/armhfp/ --cost=100
+-repo --name="instCentCR" --baseurl=http://armv7.dev.centos.org/repos/7/cr/armhfp/ --cost=100
+-repo --name="instExtras" --baseurl=http://mirror.centos.org/altarch/7/extras/armhfp/ --cost=100
+-repo --name="instKern" --baseurl=http://armv7.dev.centos.org/repos/7/kernel/armhfp/kernel-rpi2/ --cost=100
++lang ja_JP.UTF-8
++repo --name="instCentOS"  --baseurl=http://mirror.centos.org/altarch/7/os/armhfp/                 --cost=100
++repo --name="instUpdates" --baseurl=http://mirror.centos.org/altarch/7/updates/armhfp/            --cost=10
++repo --name="instCentCR"  --baseurl=http://mirror.centos.org/altarch/7/cr/armhfp/                 --cost=100
++repo --name="instExtras"  --baseurl=http://mirror.centos.org/altarch/7/extras/armhfp/             --cost=100
++repo --name="instKern"    --baseurl=http://mirror.centos.org/altarch/7/kernel/armhfp/kernel-rpi2/ --cost=100
+ # SELinux configuration
+ selinux --enforcing
+ 
+ # System services
+-services --enabled="sshd,NetworkManager,chronyd"
++services --enabled="sshd,NetworkManager,chronyd,tuned"
+ # Firewall configuration
+-firewall --enabled --port=22:tcp
++firewall --enabled --service=ssh --service=cockpit
+ # Network information
+ network  --bootproto=dhcp --device=link --activate
+ # Shutdown after installation
+ shutdown
+ # System timezone
+-timezone UTC --isUtc --nontp
++timezone Asia/Tokyo --isUtc --nontp
+ # System bootloader configuration
+ bootloader --location=mbr
+ # Partition clearing information
+ clearpart --all --initlabel
+ # Disk partitioning information
+-part /boot --asprimary --fstype="vfat" --size=700 --label=boot
+-part swap --asprimary --fstype="swap" --size=512 --label=swap
+-part / --asprimary --fstype="ext4" --size=1500 --label=rootfs
++part /boot --asprimary --fstype="ext4" --size=100 --label=boot
++part / --asprimary --fstype="ext4" --size=1947 --label=rootfs
+ 
+ %pre
+ 
+@@ -64,7 +63,7 @@
+ 
+ # Specific cmdline.txt files needed for raspberrypi2/3
+ cat > /boot/cmdline.txt << EOF
+-console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p3 rootfstype=ext4 elevator=deadline rootwait
++console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
+ EOF
+ 
+ # Setting correct yum variable to use raspberrypi kernel repo
+@@ -265,3 +264,7 @@
+ -python*-caribou*
+ 
+ %end
++
++%include ../ksmodules/c7rpi-miscs.ksmod
++%include ../ksmodules/c7rpi-fswap.ksmod
++%include ../ksmodules/c7rpi-cockpit.ksmod

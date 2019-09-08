@@ -1,0 +1,33 @@
+%packages
+tuned
+yum-utils
+%end
+
+%post
+# Enable CR Repository
+yum-config-manager --enable cr
+
+# Disable Wi-Fi and Bluetooth for Raspberry Pi 3B / 3B+
+cat > /boot/config.txt << EOF
+dtoverlay=pi3-disable-bt
+dtoverlay=pi3-disable-wifi
+EOF
+
+# Enable EPEL Repository
+cat > /etc/yum.repos.d/epel.repo << EOF
+[epel]
+name=Epel rebuild for armhfp
+baseurl=https://armv7.dev.centos.org/repodir/epel-pass-1/
+enabled=1
+gpgcheck=0
+
+EOF
+
+# Set history config
+cat > /etc/profile.d/histcfg.sh << 'EOF'
+#!/bin/sh
+unset HISTCONTROL
+HISTTIMEFORMAT='%F %T '
+HISTFILESIZE=10000
+EOF
+%end
