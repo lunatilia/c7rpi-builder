@@ -27,6 +27,9 @@ c7rpi-builder は、CentOS Userland 7 for Raspberry Pi 2/3 のカスタムイメ
 - EPEL リポジトリを追加
 - CR リポジトリを有効化
 
+## イメージ
+- [イメージのダウンロード](https://github.com/lunatilia/c7rpi-builder/releases/tag/1.0.0-20190908)
+
 ## ライセンス
 [GNU General Public License v2.0](https://github.com/lunatilia/c7rpi-builder/blob/master/LICENSE) (The CentOS Projectのデフォルトライセンス)
 

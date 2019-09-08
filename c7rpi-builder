@@ -35,7 +35,7 @@ fi
 logfile=${0}-`date +%Y%m%d%H%M%S`.log
 temp=tmp
 release=release
-imgfile=CentOS-Userland-7-armhfp-RPi3-Minimal-1810m.raw.img
+imgfile=CentOS-Userland-7-armhfp-RPi3-WebUI-1810m.raw.img
 
 mountpt=mnt
 logdir=logs
