@@ -1,0 +1,6 @@
+*.img
+logs/
+mnt/
+tmp/
+release/
+
