@@ -1,10 +1,10 @@
 ## c7rpi-builder
 
 ## 内容
-c7rpi-builder は、CentOS Userland 7 for Raspberry Pi 2/3 のカスタムイメージを作成するスクリプトです。
+c7rpi-builder は、CentOS Userland 7 for Raspberry Pi 2/3/4 のカスタムイメージを作成するスクリプトです。
 
 ## 要件
-- CentOS Userland 7 が稼働している Raspberry Pi 2B / 3B / 3B+
+- CentOS Userland 7 が稼働している Raspberry Pi 2B / 3B / 3B+ / 4B
     - [SpecialInterestGroup/AltArch/armhfp - CentOS Wiki](https://wiki.centos.org/SpecialInterestGroup/AltArch/armhfp)
     - [公式イメージ](http://isoredirect.centos.org/altarch/7/isos/armhfp)
 - root権限
@@ -28,7 +28,7 @@ c7rpi-builder は、CentOS Userland 7 for Raspberry Pi 2/3 のカスタムイメ
 - CR リポジトリを有効化
 
 ## イメージ
-- [イメージのダウンロード](https://github.com/lunatilia/c7rpi-builder/releases/tag/1.0.1-20190909)
+- [イメージのダウンロード](https://github.com/lunatilia/c7rpi-builder/releases/tag/1.0.2-20191225)
 
 ## ライセンス
 [GNU General Public License v2.0](https://github.com/lunatilia/c7rpi-builder/blob/master/LICENSE) (The CentOS Projectのデフォルトライセンス)
