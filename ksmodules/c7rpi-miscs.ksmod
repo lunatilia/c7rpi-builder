@@ -4,9 +4,6 @@ yum-utils
 %end
 
 %post
-# Enable CR Repository
-yum-config-manager --enable cr
-
 # Disable Wi-Fi and Bluetooth for Raspberry Pi 3B / 3B+
 cat > /boot/config.txt << EOF
 dtoverlay=pi3-disable-bt

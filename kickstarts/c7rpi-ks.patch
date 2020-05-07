@@ -1,6 +1,6 @@
---- original-ks.cfg	2019-09-13 04:24:23.000000000 +0900
-+++ c7rpi-ks.cfg	2019-12-25 19:59:12.922557653 +0900
-@@ -3,41 +3,40 @@
+--- original-ks.cfg	2020-04-21 07:48:31.549476426 +0900
++++ c7rpi-ks.cfg	2020-05-08 00:34:35.608857128 +0900
+@@ -3,40 +3,39 @@
  install
  # Keyboard layouts
  # old format: keyboard us
@@ -29,12 +29,10 @@
  shutdown
 -repo --name="instCentOS" --baseurl=http://qa.centos.org/altarch/7/os/armhfp/ --cost=100
 -repo --name="instUpdates" --baseurl=http://qa.centos.org/altarch/7/updates/armhfp/ --cost=100
--repo --name="instCentCR" --baseurl=http://qa.centos.org/altarch/7/cr/armhfp/ --cost=100
 -repo --name="instExtras" --baseurl=http://qa.centos.org/altarch/7/extras/armhfp/ --cost=100
 -repo --name="instKern" --baseurl=http://qa.centos.org/altarch/7/kernel/armhfp/kernel-rpi2/ --cost=100
 +repo --name="instCentOS"  --baseurl=http://mirror.centos.org/altarch/7/os/armhfp/                 --cost=100
 +repo --name="instUpdates" --baseurl=http://mirror.centos.org/altarch/7/updates/armhfp/            --cost=10
-+repo --name="instCentCR"  --baseurl=http://mirror.centos.org/altarch/7/cr/armhfp/                 --cost=100
 +repo --name="instExtras"  --baseurl=http://mirror.centos.org/altarch/7/extras/armhfp/             --cost=100
 +repo --name="instKern"    --baseurl=http://mirror.centos.org/altarch/7/kernel/armhfp/kernel-rpi2/ --cost=100
  # System timezone
@@ -50,22 +48,34 @@
  # Disk partitioning information
 -part /boot --asprimary --fstype="vfat" --size=300 --label=boot
 -part swap --asprimary --fstype="swap" --size=512 --label=swap
--part / --asprimary --fstype="ext4" --size=1500 --label=rootfs
+-part / --asprimary --fstype="ext4" --size=1800 --label=rootfs
 +part /boot --asprimary --fstype="ext4" --size=100 --label=boot
 +part / --asprimary --fstype="ext4" --size=1947 --label=rootfs
  
- %pre
+ %post
+ # Mandatory README file
+@@ -48,11 +47,6 @@
  
-@@ -65,7 +64,7 @@
+ EOF
  
- # Specific cmdline.txt files needed for raspberrypi2/3
+-# Enabling chronyd on boot
+-systemctl enable chronyd
+-
+-
+-
+ # Remove ifcfg-link on pre generated images
+ rm -f /etc/sysconfig/network-scripts/ifcfg-link
+ 
+@@ -65,7 +59,7 @@
+ %post
+ # Specific cmdline.txt files needed for raspberrypi2/3/4
  cat > /boot/cmdline.txt << EOF
 -console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p3 rootfstype=ext4 elevator=deadline rootwait
 +console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
  EOF
  
  # Setting correct yum variable to use raspberrypi kernel repo
-@@ -273,3 +272,7 @@
+@@ -342,3 +336,7 @@
  -python*-caribou*
  
  %end

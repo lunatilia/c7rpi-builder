@@ -18,6 +18,7 @@ c7rpi-builder は、CentOS Userland 7 for Raspberry Pi 2/3/4 のカスタムイ�
 ## デフォルトからの変更内容
 - キーボードと言語を日本語に変更
 - タイムゾーンを Asia/Tokyo に変更
+- ブートパーティションを 300 MB から 100 MB に変更
 - スワップパーティションを削除
 - 代わりにスワップファイル管理スクリプトを追加
 - cockpit を追加
@@ -25,10 +26,9 @@ c7rpi-builder は、CentOS Userland 7 for Raspberry Pi 2/3/4 のカスタムイ�
 - Bluetooth と Wi-Fi を無効化
 - history のフォーマットを変更
 - EPEL リポジトリを追加
-- CR リポジトリを有効化
 
 ## イメージ
-- [イメージのダウンロード](https://github.com/lunatilia/c7rpi-builder/releases/tag/1.0.2-20191225)
+- [イメージのダウンロード](https://github.com/lunatilia/c7rpi-builder/releases/tag/1.0.3-20200508)
 
 ## ライセンス
 [GNU General Public License v2.0](https://github.com/lunatilia/c7rpi-builder/blob/master/LICENSE) (The CentOS Projectのデフォルトライセンス)
